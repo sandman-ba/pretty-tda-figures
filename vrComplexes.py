@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 # --------------------------------
 # Simple example for VR complexes (two squares, two circles)
+
 def sampleCircles(n, r, p, eps = 0.0):
     """
     This function samples nk points from a circle of radius rk centered at pk
@@ -35,21 +36,22 @@ def sampleCircles(n, r, p, eps = 0.0):
 
     return np.array([x, y]).T
 
-def plotCloudData(pointCloud1, pointCloud2):
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, sharey = 'row', sharex = 'row')
+def plotCloudData(point_cloud, name = 'data-point-cloud.png'):
 
-    ax1.plot(pointCloud1[:,0], pointCloud1[:,1], '.')
-    ax2.plot(pointCloud2[:,0], pointCloud2[:,1], '.')
+    fig, ax = plt.figure(figsize = (6.4, 4.8))
 
-    plt.savefig('figures/data-point-cloud.png')
+    ax.plot(point_cloud[:,0], point_cloud[:,1], '.')
 
-    return [diagram1, diagram2]
+    plt.savefig(f"figures/{name}")
+
+    return fig, ax
 
 
 # --------------------------------
 # Time series example
 # Takens embedding
+
 def sampleMarchese(n = 25, step = 0.01):
     """
     This function samples n points from the distributions
@@ -69,43 +71,32 @@ def sampleMarchese(n = 25, step = 0.01):
     return (v, w)
 
 
-def takens(timeSeries, tau, dim = 2):
+def takens(time_series, tau, dim = 2):
     """
     This function returns Takens' delay embeding of a time series {x_t}
         X_k = ( x_k, x_{k + tau}, ..., x_{k + d*tau} )
     where tau is the delay parameter and d is the dimension minus 1.
     """
 
-    T = timeSeries.size
+    T = time_series.size
     N = T - (dim - 1) * tau
-    pointCloud = np.zeros( (N, dim) )
+    point_cloud = np.zeros( (N, dim) )
 
     for i in range(dim):
-        pointCloud[:,i] = timeSeries[tau * i : N + tau * i]
+        point_cloud[:,i] = time_series[tau * i : N + tau * i]
 
-    return pointCloud
+    return point_cloud
 
-def plotSeriesData(timeSeries1, timeSeries2, tau):
-    pointCloud1 = takens(timeSeries1, tau)
-    pointCloud2 = takens(timeSeries2, tau)
 
-    rips1 = Rips()
-    rips2 = Rips()
+def plotSeriesData(time_series, tau, name = 'data-time-series.png'):
+    point_cloud = takens(time_series, tau)
 
-    diagram1 = rips1.fit_transform(pointCloud1)
-    diagram2 = rips2.fit_transform(pointCloud2)
+    fig, (ax1, ax2) = plt.subplots(1, 2)
 
-    fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(2, 3, sharey = 'row', sharex = 'row')
+    ax1.plot(time_series)
 
-    ax1.plot(timeSeries1)
-    ax2.plot(timeSeries2)
+    ax2.plot(point_cloud[:,0], point_cloud[:,1], '.')
 
-    ax3.plot(pointCloud1[:,0], pointCloud1[:,1], '.')
-    ax4.plot(pointCloud2[:,0], pointCloud2[:,1], '.')
+    plt.savefig(f"figures/{name}")
 
-    rips1.plot(diagram1, ax = ax3, plot_only = [1], labels = '$H_1$', diagonal = False, show = False, legend = False)
-    rips2.plot(diagram2, ax = ax4, plot_only = [1], labels = '$H_1$', diagonal = False, show = False, legend = False)
-
-    plt.savefig('figures/data-time-series.png')
-
-    return [diagram1, diagram2]
+    return fig, (ax1, ax2)
