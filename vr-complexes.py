@@ -3,6 +3,13 @@ from numpy.random import rand
 import matplotlib.pyplot as plt
 
 
+# General topologial objects to explain tda and betti numbers
+# Ball, sphere, circle, torus...
+# Or perhaps clusters, circles, line...
+
+
+# --------------------------------
+# Simple example for VR complexes (two squares, two circles)
 def sampleCircles(n, r, p, eps = 0.0):
     """
     This function samples nk points from a circle of radius rk centered at pk
@@ -28,6 +35,21 @@ def sampleCircles(n, r, p, eps = 0.0):
 
     return np.array([x, y]).T
 
+def plotCloudData(pointCloud1, pointCloud2):
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey = 'row', sharex = 'row')
+
+    ax1.plot(pointCloud1[:,0], pointCloud1[:,1], '.')
+    ax2.plot(pointCloud2[:,0], pointCloud2[:,1], '.')
+
+    plt.savefig('figures/data-point-cloud.png')
+
+    return [diagram1, diagram2]
+
+
+# --------------------------------
+# Time series example
+# Takens embedding
 def sampleMarchese(n = 25, step = 0.01):
     """
     This function samples n points from the distributions
@@ -62,25 +84,6 @@ def takens(timeSeries, tau, dim = 2):
         pointCloud[:,i] = timeSeries[tau * i : N + tau * i]
 
     return pointCloud
-
-def plotCloudData(pointCloud1, pointCloud2):
-    rips1 = Rips()
-    rips2 = Rips()
-
-    diagram1 = rips1.fit_transform(pointCloud1)
-    diagram2 = rips2.fit_transform(pointCloud2)
-
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey = 'row', sharex = 'row')
-
-    ax1.plot(pointCloud1[:,0], pointCloud1[:,1], '.')
-    ax2.plot(pointCloud2[:,0], pointCloud2[:,1], '.')
-
-    rips1.plot(diagram1, ax = ax3, plot_only = [1], labels = '$H_1$', diagonal = False, show = False, legend = False)
-    rips2.plot(diagram2, ax = ax4, plot_only = [1], labels = '$H_1$', diagonal = False, show = False, legend = False)
-
-    plt.savefig('figures/data-point-cloud.png')
-
-    return [diagram1, diagram2]
 
 def plotSeriesData(timeSeries1, timeSeries2, tau):
     pointCloud1 = takens(timeSeries1, tau)
