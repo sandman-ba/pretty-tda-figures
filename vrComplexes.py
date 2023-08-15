@@ -39,13 +39,13 @@ def sampleCircles(n, r, p, eps = 0.0):
 
 def plotCloudData(point_cloud, name = 'data-point-cloud.png'):
 
-    fig, ax = plt.figure(figsize = (6.4, 4.8))
+    fig = plt.figure(figsize = (6.4, 4.8))
 
-    ax.plot(point_cloud[:,0], point_cloud[:,1], '.')
+    plt.plot(point_cloud[:,0], point_cloud[:,1], '.')
 
     plt.savefig(f"figures/{name}")
 
-    return fig, ax
+    return fig
 
 
 # --------------------------------
