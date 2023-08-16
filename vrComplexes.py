@@ -37,13 +37,17 @@ def sampleCircles(n, r, p, eps = 0.0):
     return np.array([x, y]).T
 
 
-def plotCloudData(point_cloud, name = 'data-point-cloud.png'):
+def plotCloudData(point_cloud, name = 'data-point-cloud.png', no_labels = False, figure_size = (6.4, 4.8)):
 
-    fig = plt.figure(figsize = (6.4, 4.8))
+    fig = plt.figure(figsize = figure_size, dpi = 200)
 
     plt.plot(point_cloud[:,0], point_cloud[:,1], '.')
 
-    plt.savefig(f"figures/{name}")
+    if no_labels:
+        plt.xticks([])
+        plt.yticks([])
+
+    plt.savefig(f"figures/{name}", bbox_inches = 'tight')
 
     return fig
 
@@ -91,12 +95,12 @@ def takens(time_series, tau, dim = 2):
 def plotSeriesData(time_series, tau, name = 'data-time-series.png'):
     point_cloud = takens(time_series, tau)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12.8, 4.8), dpi = 200)
 
     ax1.plot(time_series)
 
     ax2.plot(point_cloud[:,0], point_cloud[:,1], '.')
 
-    plt.savefig(f"figures/{name}")
+    plt.savefig(f"figures/{name}", bbox_inches = 'tight')
 
     return fig, (ax1, ax2)
