@@ -33,22 +33,24 @@ def plotPersistenceDiagram(point_cloud, dimensions = [0, 1], name = 'persistence
 # Lines for the matching
 def plotWassersteinDistance(diagram1, diagram2, name = 'wasserstein-distance.png'):
 
-    diagonal = np.linspace(-0.1, 3.6, 3)
+    projection = np.sum(diagram1[1, :]) / 2
 
     fig = plt.figure(figsize = (4.8, 4.8), dpi = 200)
 
-    plt.plot(diagonal, diagonal, '--k')
+    plt.plot([-0.1, 3.6], [-0.1, 3.6], '--k')
     plt.xlim(0.0, 3.5)
     plt.ylim(0.0, 3.5)
     plt.xlabel('Birth')
     plt.ylabel('Death')
 
-
-    plt.plot(*diagram1.T, 'o', markersize = 10)
-
-    plt.plot(*diagram2.T, '^', markersize = 10)
-
     # Plot matching
+    plt.plot([diagram1[0, 0], diagram2[0, 0]], [diagram1[0, 1], diagram2[0, 1]], ':m')
+    plt.plot([diagram1[1, 0], projection], [diagram1[1, 1], projection], ':m')
+
+
+    plt.plot(*diagram1.T, 'o', markersize = 8)
+
+    plt.plot(*diagram2.T, '^', markersize = 8)
 
     plt.savefig(f"figures/{name}", bbox_inches = 'tight')
 
@@ -62,24 +64,23 @@ def plotWassersteinDistance(diagram1, diagram2, name = 'wasserstein-distance.png
 # Label unmatched points with c
 def plotDCPDistance(diagram1, diagram2, name = 'dcp-distance.png'):
 
-#    diagonal = np.linspace(-0.1, 1.1, 3)
+    fig, ax = plt.subplots(figsize = (4.8, 4.8), dpi = 200)
 
-    fig = plt.figure(figsize = (4.8, 4.8), dpi = 200)
-
-#    ax.plot(diagonal, diagonal, '--k')
-    plt.plot([-0.1, 3.6], [-0.1, 3.6], '--k')
-    plt.xlim(0.0, 3.5)
-    plt.ylim(0.0, 3.5)
-    plt.xlabel('Birth')
-    plt.ylabel('Death')
-
-
-    plt.plot(*diagram1.T, 'o', markersize = 10)
-
-    plt.plot(*diagram2.T, '^', markersize = 10)
+    ax.plot([-0.1, 3.6], [-0.1, 3.6], '--k')
+    ax.set_xlim(0.0, 3.5)
+    ax.set_ylim(0.0, 3.5)
+    ax.set_xlabel('Birth')
+    ax.set_ylabel('Death')
 
     # Plot matching
+    ax.plot([diagram1[0, 0], diagram2[0, 0]], [diagram1[0, 1], diagram2[0, 1]], ':m')
+    ax.annotate('$c$', xy = diagram1[1, :], xycoords = 'data', xytext = (-9, 5), textcoords = 'offset points', color = 'm')
+
+
+    ax.plot(*diagram1.T, 'o', markersize = 8)
+
+    ax.plot(*diagram2.T, '^', markersize = 8)
 
     plt.savefig(f"figures/{name}", bbox_inches = 'tight')
 
-    return fig
+    return fig, ax
