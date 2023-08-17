@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.random import rand
+from numpy.random import rand, normal
 import matplotlib.pyplot as plt
 
 
@@ -7,6 +7,17 @@ import matplotlib.pyplot as plt
 # Ball, sphere, circle, torus...
 # Or perhaps clusters, circles, line...
 
+def sampleClusters(n, p, eps = 0.1):
+    """
+    This function samples n points from a cluster centered at pk
+    for each entry of p.
+    Samples have Gaussian noise with variance eps.
+    """
+    p = np.repeat(p, n, axis=0)
+    x = normal(p[:,0], eps)
+    y = normal(p[:,1], eps)
+
+    return np.array([x, y]).T
 
 # --------------------------------
 # Simple example for VR complexes (two squares, two circles)
@@ -95,7 +106,7 @@ def takens(time_series, tau, dim = 2):
 def plotSeriesData(time_series, tau, name = 'data-time-series.png'):
     point_cloud = takens(time_series, tau)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12.8, 4.8), dpi = 200)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (12.8, 4.8), dpi = 100)
 
     ax1.plot(time_series)
 
