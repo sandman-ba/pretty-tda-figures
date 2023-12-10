@@ -10,13 +10,15 @@ tau = 4200
 diagram1 = np.array([[1.0, 1.5], [2.0, 2.5]])
 diagram2 = np.array([[0.6, 1.7]])
 
-plotCloudData(clusters, name = 'clusters.png', no_labels = True, figure_size = (4.8, 4.8))
-plotCloudData(two_circles_plot, name = 'two-circles-data.png', no_labels = True, figure_size = (4.8, 4.8))
+plotCloudData(clusters, name = 'clusters.png', figure_size = (3.2, 3.1))
+plotCloudData(two_circles_plot, name = 'two-circles-data.png', figure_size = (3.2, 3.1))
+#plotCloudData(clusters, name = 'clusters.png', no_labels = True, figure_size = (4.8, 4.8))
+#plotCloudData(two_circles_plot, name = 'two-circles-data.png', no_labels = True, figure_size = (4.8, 4.8))
 
 plotPersistenceDiagram(two_circles_plot, name = 'circles-diagram.png')
 plotPersistenceDiagram(clusters, name = 'clusters-diagram.png')
 
-plotSeriesData(time_series, tau)
+#plotSeriesData(time_series, tau)
 
-plotWassersteinDistance(diagram1, diagram2)
-plotDCPDistance(diagram1, diagram2)
+plotWassersteinDistance(diagram1, diagram2, figure_size = (3.2, 3.1))
+plotDCPDistance(diagram1, diagram2, figure_size = (3.2, 3.1))
